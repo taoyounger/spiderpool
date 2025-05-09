@@ -164,7 +164,7 @@ jobs:
       - name: Create Pull Request
         if: ${{ env.SKIP_CREATE_PR != 'true' }}
         id: create_pr
-        uses: peter-evans/create-pull-request@v7.0.6
+        uses: peter-evans/create-pull-request@v7.0.8
         with:
           title: "robot updates kind node version in k8s matrix test"
           commit-message: "robot updates kind node version in k8s matrix test"
@@ -185,7 +185,7 @@ jobs:
       matrix:
         # Synchronise with the latest releases of each version
         # If a new version of kind/node is released, it will be updated automatically.
-        version: [v1.28.13, v1.29.8, v1.30.4, v1.27.16, v1.26.15, v1.25.16, v1.23.17, v1.24.17, v1.22.17]
+        version: [v1.32.3, v1.28.13, v1.29.8, v1.30.4, v1.27.16, v1.26.15, v1.25.16, v1.23.17, v1.24.17]
     needs: [call_build_ci_image, get_ref, call_release_chart]
     uses: ./.github/workflows/e2e-init.yaml
     with:
