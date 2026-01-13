@@ -824,7 +824,7 @@ func (i *ipam) selectByPod(ctx context.Context, version types.IPVersion, ipPool 
 		// Refer from the multus-cni source codes, for annotation "k8s.v1.cni.cncf.io/networks" value without Namespace,
 		// we will regard the pod Namespace as the value's namespace
 		if multusNS == "" {
-			multusNS = pod.ObjectMeta.Namespace
+			multusNS = pod.Namespace
 		}
 
 		// impossible
@@ -847,7 +847,7 @@ func (i *ipam) selectByPod(ctx context.Context, version types.IPVersion, ipPool 
 				return nil
 			}
 		}
-		return fmt.Errorf("The spec.multusName %v in the IPPool %v used by the Pod interface %v is not matched with the multusCR %v/%v specified by the Pod.", ipPool.Spec.MultusName, ipPool.Name, nic, multusNS, multusName)
+		return fmt.Errorf("the spec.multusName %v in the IPPool %v used by the Pod interface %v is not matched with the multusCR %v/%v specified by the Pod", ipPool.Spec.MultusName, ipPool.Name, nic, multusNS, multusName)
 	}
 
 	if !matchMasterSubnet {
@@ -878,7 +878,7 @@ func (i *ipam) filterPoolCandidatesByPfSubnet(pool *spiderpoolv2beta1.SpiderIPPo
 	if err != nil {
 		return fmt.Errorf("filterPoolCandidatesByPfSubnet: failed to get netns %q for pod: %v", podNetNamespace, err)
 	}
-	defer netns.Close()
+	defer func() { _ = netns.Close() }()
 
 	var pfName string
 	err = netns.Do(func(_ ns.NetNS) error {
@@ -886,7 +886,7 @@ func (i *ipam) filterPoolCandidatesByPfSubnet(pool *spiderpoolv2beta1.SpiderIPPo
 		if err != nil {
 			return err
 		}
-		pfName, err = networking.GetPfNameFromVfDeviceId(vfDeviceID)
+		pfName, err = networking.GetPfNameFromVfDeviceID(vfDeviceID)
 		if err != nil {
 			return err
 		}
@@ -913,7 +913,7 @@ func (i *ipam) filterPoolCandidatesByPfSubnet(pool *spiderpoolv2beta1.SpiderIPPo
 	}
 
 	for _, addr := range addrs {
-		if ipNet.Contains(addr.IPNet.IP) {
+		if ipNet.Contains(addr.IP) {
 			return nil
 		}
 	}

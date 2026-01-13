@@ -152,7 +152,7 @@ var _ = Describe("Chaos Testing of GC", Label("reclaim"), func() {
 				// It is expected that GC All and tracePod_worker processes will be triggered multiple times within 1 minutes to check whether the IP address is incorrectly collected by GC,
 				// resulting in an IP address conflict.
 				if time.Since(startTime) >= timeout {
-					fmt.Println("3 minutes have passed, IP conflict check passed, exiting.")
+					GinkgoWriter.Println("3 minutes have passed, IP conflict check passed, exiting.")
 					break
 				}
 				GinkgoWriter.Printf("Start checking for IP conflicts, time: %v \n", time.Since(startTime))

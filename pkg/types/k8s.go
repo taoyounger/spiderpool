@@ -67,11 +67,11 @@ func (in *PodSubnetAnnoConfig) String() string {
 	}
 
 	s := strings.Join([]string{`&PodSubnetAnnoConfig{`,
-		`MultipleSubnets` + fmt.Sprintf("%v", in.MultipleSubnets),
+		`MultipleSubnets` + fmt.Sprintf("%v", in.MultipleSubnets) + `,`,
 		`SingleSubnet:` + strings.Replace(strings.Replace(in.SingleSubnet.String(), "AnnoSubnetItem", "", 1), `&`, ``, 1) + `,`,
 		`FlexibleIPNum:` + stringutil.ValueToStringGenerated(in.FlexibleIPNum) + `,`,
 		`AssignIPNumber:` + fmt.Sprintf("%v", in.AssignIPNum) + `,`,
-		`ReclaimIPPool:` + fmt.Sprintf("%v", in.ReclaimIPPool),
+		`ReclaimIPPool:` + fmt.Sprintf("%v", in.ReclaimIPPool) + `,`,
 		`}`,
 	}, "")
 	return s

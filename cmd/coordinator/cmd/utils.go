@@ -643,13 +643,13 @@ func (c *coordinator) ensureIPtablesRule(iptablesInterfaces []utiliptables.Inter
 	return nil
 }
 
-func GetAllHostIPRouteForPod(c *coordinator, ipFamily int, allPodIp []netlink.Addr) (finalNodeIpList []net.IP, e error) {
+func GetAllHostIPRouteForPod(c *coordinator, ipFamily int, allPodIP []netlink.Addr) (finalNodeIPList []net.IP, e error) {
 
-	finalNodeIpList = []net.IP{}
+	finalNodeIPList = []net.IP{}
 
 OUTER1:
 	// get node ip by `ip r get podIP`
-	for _, item := range allPodIp {
+	for _, item := range allPodIP {
 		var t net.IP
 		v4Gw, v6Gw, err := networking.GetGatewayIP([]netlink.Addr{item})
 		if err != nil {
@@ -660,12 +660,12 @@ OUTER1:
 		} else if len(v6Gw) > 0 && (ipFamily == netlink.FAMILY_V6 || ipFamily == netlink.FAMILY_ALL) {
 			t = v6Gw
 		}
-		for _, k := range finalNodeIpList {
+		for _, k := range finalNodeIPList {
 			if k.Equal(t) {
 				continue OUTER1
 			}
 		}
-		finalNodeIpList = append(finalNodeIpList, t)
+		finalNodeIPList = append(finalNodeIPList, t)
 	}
 
 	var DefaultNodeInterfacesToExclude = []string{
@@ -676,33 +676,33 @@ OUTER1:
 	}
 
 	// get additional host ip
-	additionalIp, err := networking.GetAllIPAddress(ipFamily, DefaultNodeInterfacesToExclude)
+	additionalIP, err := networking.GetAllIPAddress(ipFamily, DefaultNodeInterfacesToExclude)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get IPAddressOnNode: %v", err)
 	}
 OUTER2:
-	for _, t := range additionalIp {
+	for _, t := range additionalIP {
 		if len(t.IP) == 0 {
 			continue OUTER2
 		}
 
-		for _, k := range finalNodeIpList {
+		for _, k := range finalNodeIPList {
 			if k.Equal(t.IP) {
 				continue OUTER2
 			}
 		}
 		if t.IP.To4() != nil {
 			if ipFamily == netlink.FAMILY_V4 || ipFamily == netlink.FAMILY_ALL {
-				finalNodeIpList = append(finalNodeIpList, t.IP)
+				finalNodeIPList = append(finalNodeIPList, t.IP)
 			}
 		} else {
 			if ipFamily == netlink.FAMILY_V6 || ipFamily == netlink.FAMILY_ALL {
-				finalNodeIpList = append(finalNodeIpList, t.IP)
+				finalNodeIPList = append(finalNodeIPList, t.IP)
 			}
 		}
 	}
 
-	return finalNodeIpList, nil
+	return finalNodeIPList, nil
 }
 
 func (c *coordinator) AnnounceIPs(logger *zap.Logger) error {
@@ -729,7 +729,7 @@ func (c *coordinator) AnnounceIPs(logger *zap.Logger) error {
 			if err != nil {
 				return fmt.Errorf("failed to init ndp client: %w", err)
 			}
-			defer ndpClient.Close()
+			defer func() { _ = ndpClient.Close() }()
 			if err = networking.SendUnsolicitedNeighborAdvertisement(addr.IP, ifi, ndpClient); err != nil {
 				logger.Error("failed to send unsolicited neighbor advertisements", zap.Error(err))
 			} else {

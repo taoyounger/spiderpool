@@ -82,7 +82,7 @@ func CmdDel(args *skel.CmdArgs) (err error) {
 		logger.Sugar().Error("failed to GetNS,", zap.Error(err))
 		return fmt.Errorf("failed to GetNS %s: %v", args.Netns, err)
 	}
-	defer c.netns.Close()
+	defer func() { _ = c.netns.Close() }()
 
 	hostVeth := getHostVethName(args.ContainerID)
 	vethLink, err := netlink.LinkByName(hostVeth)

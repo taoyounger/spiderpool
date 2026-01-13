@@ -105,13 +105,13 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 		logger.Error(err.Error())
 		return fmt.Errorf("failed to GetNS %q: %v", args.Netns, err)
 	}
-	defer c.netns.Close()
+	defer func() { _ = c.netns.Close() }()
 
 	c.hostNs, err = ns.GetCurrentNS()
 	if err != nil {
 		return fmt.Errorf("failed to get current netns: %v", err)
 	}
-	defer c.hostNs.Close()
+	defer func() { _ = c.hostNs.Close() }()
 	logger.Sugar().Debugf("Get current host netns: %v", c.hostNs.Path())
 
 	// checking if the nic is in up state
@@ -129,9 +129,9 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 	}
 
 	// get all ip of pod
-	var allPodIp []netlink.Addr
+	var allPodIP []netlink.Addr
 	err = c.netns.Do(func(netNS ns.NetNS) error {
-		allPodIp, err = networking.GetAllIPAddress(ipFamily, []string{`^lo$`})
+		allPodIP, err = networking.GetAllIPAddress(ipFamily, []string{`^lo$`})
 		if err != nil {
 			logger.Error("failed to GetAllIPAddress in pod", zap.Error(err))
 			return fmt.Errorf("failed to GetAllIPAddress in pod: %v", err)
@@ -142,10 +142,10 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 		logger.Error("failed to all ip of pod", zap.Error(err))
 		return err
 	}
-	logger.Debug(fmt.Sprintf("all pod ip: %+v", allPodIp))
+	logger.Debug(fmt.Sprintf("all pod ip: %+v", allPodIP))
 
 	// get ip addresses of the node
-	c.hostIPRouteForPod, err = GetAllHostIPRouteForPod(c, ipFamily, allPodIp)
+	c.hostIPRouteForPod, err = GetAllHostIPRouteForPod(c, ipFamily, allPodIP)
 	if err != nil {
 		logger.Error("failed to get IPAddressOnNode", zap.Error(err))
 		return fmt.Errorf("failed to get IPAddressOnNode: %v", err)

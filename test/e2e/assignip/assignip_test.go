@@ -189,7 +189,7 @@ var _ = Describe("test pod", Label("assignip"), func() {
 			})
 
 		It("The cluster is dual stack, but the spiderpool can allocates ipv4 or ipv6 only with IPPools annotation", Label("E00009"), func() {
-			if !(frame.Info.IpV4Enabled && frame.Info.IpV6Enabled) {
+			if !frame.Info.IpV4Enabled || !frame.Info.IpV6Enabled {
 				Skip("Single stack just skip this e2e case")
 			}
 
@@ -222,7 +222,7 @@ var _ = Describe("test pod", Label("assignip"), func() {
 			if !frame.Info.SpiderSubnetEnabled {
 				Skip("The SpiderSubnet feature is disabled, skip this e2e case")
 			}
-			if !(frame.Info.IpV4Enabled && frame.Info.IpV6Enabled) {
+			if !frame.Info.IpV4Enabled || !frame.Info.IpV6Enabled {
 				Skip("Single stack just skip this e2e case")
 			}
 

@@ -75,7 +75,7 @@ lint-golang:
 	@$(ECHO_CHECK) contrib/scripts/lock-check.sh
 	$(QUIET) contrib/scripts/lock-check.sh
 	@$(ECHO_CHECK) vetting all GOFILES...
-	$(QUIET) $(GO_VET) \
+	$(QUIET) GOOS=linux $(GO_VET) \
     ./cmd/... \
     ./pkg/... \
     ./test/...  \

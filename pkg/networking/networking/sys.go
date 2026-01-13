@@ -15,7 +15,7 @@ const (
 	SysBusPciDevicesPath  = "/sys/bus/pci/devices"
 )
 
-func GetPfNameFromVfDeviceId(vfDeviceID string) (string, error) {
+func GetPfNameFromVfDeviceID(vfDeviceID string) (string, error) {
 	pfDeviceID, err := GetPfDeviceIDFromVF(vfDeviceID)
 	if err != nil {
 		return "", err
@@ -26,18 +26,18 @@ func GetPfNameFromVfDeviceId(vfDeviceID string) (string, error) {
 
 func GetPfDeviceIDFromVF(vfDeviceID string) (string, error) {
 	// First try the traditional approach via sysfs (works in host namespace)
-	vf_physfn := path.Join(SysBusPciDevicesPath, vfDeviceID, "physfn")
-	physfnInfo, err := os.Lstat(vf_physfn)
+	vfPhysfn := path.Join(SysBusPciDevicesPath, vfDeviceID, "physfn")
+	physfnInfo, err := os.Lstat(vfPhysfn)
 	if err != nil {
 		return "", fmt.Errorf("failed to get physfn info for VF %s: %v", vfDeviceID, err)
 	}
 
 	if physfnInfo.Mode()&os.ModeSymlink == 0 {
-		return "", fmt.Errorf("physfn %s is not a symlink", vf_physfn)
+		return "", fmt.Errorf("physfn %s is not a symlink", vfPhysfn)
 	}
 
 	// Read the path that the symlink points to
-	physfnPath, err := os.Readlink(vf_physfn)
+	physfnPath, err := os.Readlink(vfPhysfn)
 	if err != nil {
 		return "", fmt.Errorf("failed to read physfn symlink for vf %s: %v", vfDeviceID, err)
 	}

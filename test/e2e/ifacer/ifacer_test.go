@@ -327,11 +327,11 @@ var _ = Describe("test ifacer", Label("ifacer"), func() {
 			return len(podList.Items) == len(frame.Info.KindNodeList)
 		}, common.PodStartTimeout, common.ForcedWaitingTime).Should(BeTrue())
 
-		sameVlanIdErrorString := fmt.Sprintf("cannot have multiple different vlan interfaces with the same vlanId %v on node at the same time", vlanInterface)
+		sameVlanIDErrorString := fmt.Sprintf("cannot have multiple different vlan interfaces with the same vlanId %v on node at the same time", vlanInterface)
 		for _, pod := range podList.Items {
 			ctx, cancel = context.WithTimeout(context.Background(), common.EventOccurTimeout)
 			defer cancel()
-			err = frame.WaitExceptEventOccurred(ctx, common.OwnerPod, pod.Name, namespace, sameVlanIdErrorString)
+			err = frame.WaitExceptEventOccurred(ctx, common.OwnerPod, pod.Name, namespace, sameVlanIDErrorString)
 			Expect(err).NotTo(HaveOccurred())
 		}
 	})

@@ -24,7 +24,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/spidernet-io/spiderpool/pkg/constant"
-	pkgconstant "github.com/spidernet-io/spiderpool/pkg/constant"
 	"github.com/spidernet-io/spiderpool/pkg/ip"
 	spiderpoolv2beta1 "github.com/spidernet-io/spiderpool/pkg/k8s/apis/spiderpool.spidernet.io/v2beta1"
 	"github.com/spidernet-io/spiderpool/pkg/types"
@@ -1338,7 +1337,7 @@ var _ = Describe("MacvlanOverlayOne", Label("overlay", "one-nic", "coordinator")
 				}
 				subnetsAnnoMarshal, err := json.Marshal(subnetsAnno)
 				Expect(err).NotTo(HaveOccurred())
-				annotations[pkgconstant.AnnoSpiderSubnets] = string(subnetsAnnoMarshal)
+				annotations[constant.AnnoSpiderSubnets] = string(subnetsAnnoMarshal)
 			}
 			netreach.Annotation = annotations
 			netreach.HostNetwork = false

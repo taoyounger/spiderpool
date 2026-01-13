@@ -72,7 +72,7 @@ func parseString2BondOptions(options string) (*BondOptions, error) {
 	options = strings.TrimSpace(options)
 	optionsList := strings.Split(options, ";")
 
-	var rawOptionsJsonStr string
+	var rawOptionsJSONStr string
 	for idx, option := range optionsList {
 		kv := strings.Split(option, "=")
 		if len(kv) != 2 {
@@ -92,13 +92,13 @@ func parseString2BondOptions(options string) (*BondOptions, error) {
 		}
 
 		if idx == 0 {
-			rawOptionsJsonStr = op
+			rawOptionsJSONStr = op
 		} else {
-			rawOptionsJsonStr = fmt.Sprintf("%s,%s", rawOptionsJsonStr, op)
+			rawOptionsJSONStr = fmt.Sprintf("%s,%s", rawOptionsJSONStr, op)
 		}
 	}
 
-	optionsJsonStr := fmt.Sprintf("{%s}", rawOptionsJsonStr)
+	optionsJsonStr := fmt.Sprintf("{%s}", rawOptionsJSONStr)
 
 	bondOptions := &BondOptions{}
 	if err := json.Unmarshal([]byte(optionsJsonStr), bondOptions); err != nil {
@@ -137,15 +137,15 @@ func parseBondOptions2NetlinkBond(bondOptions *BondOptions, bond *netlink.Bond) 
 		}
 
 		if len(bondOptions.ArpIpTargets) > 0 {
-			var arpIpTargets []net.IP
+			var arpIPTargets []net.IP
 			for _, arpIpTargetStr := range bondOptions.ArpIpTargets {
 				arpIpTarget := net.ParseIP(arpIpTargetStr)
 				if arpIpTarget == nil {
 					return fmt.Errorf("invalid bond arp_ip_target: %s", arpIpTargetStr)
 				}
-				arpIpTargets = append(arpIpTargets, arpIpTarget)
+				arpIPTargets = append(arpIPTargets, arpIpTarget)
 			}
-			bondOptionsFuncs = append(bondOptionsFuncs, ArpIpTargetsOption(arpIpTargets))
+			bondOptionsFuncs = append(bondOptionsFuncs, ArpIPTargetsOption(arpIPTargets))
 		}
 		bondOptionsFuncs = GetAllIntBondOptions(bondOptions, bondOptionsFuncs)
 	}

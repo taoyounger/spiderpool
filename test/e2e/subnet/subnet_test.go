@@ -71,11 +71,11 @@ var _ = Describe("test subnet", Label("subnet"), func() {
 
 		var (
 			// Available IP in Subnet
-			subnetIpNum int = 150
+			subnetIpNum = 150
 			// Number of deployments created
-			deployOriginiaNum int = 30
+			deployOriginiaNum = 30
 			// How much of the deployment is for scaling up?
-			deployScaleupNum int = 15
+			deployScaleupNum = 15
 			// Initial number of replicas of deploy
 			deployReplicasOriginialNum int32 = 2
 			// Number of Scaling up replicas of deploy
@@ -83,7 +83,7 @@ var _ = Describe("test subnet", Label("subnet"), func() {
 			// Number of Scaling down replicas of deploy
 			deployReplicasScaledownNum int32 = 1
 			// Number of fixed IP
-			fixedIPNumber string = "5"
+			fixedIPNumber = "5"
 		)
 
 		BeforeEach(func() {
@@ -300,7 +300,7 @@ var _ = Describe("test subnet", Label("subnet"), func() {
 
 		It("Automatic creation, extension and deletion of ippool by different controllers", Label("I00003"), func() {
 			var (
-				stsName                 string = "sts-" + tools.RandomName()
+				stsName                        = "sts-" + tools.RandomName()
 				stsReplicasOriginialNum int32  = 1
 				stsReplicasScaleupNum   int32  = 2
 				rsName                  string = "rs-" + tools.RandomName()
