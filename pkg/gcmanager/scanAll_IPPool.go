@@ -350,7 +350,7 @@ func (s *SpiderGC) executeScanAll(ctx context.Context) {
 							// If there is a value, it means that the pod has been started and the IP has been successfully assigned through cmdAdd
 							// If there is no value, it means that the new pod is still starting.
 							if len(podYaml.Status.PodIPs) != 0 {
-								wrappedLog.Sugar().Infof("pod %s/%s is a static Pod with a status of %v and has been assigned an different IP address, the endpoint %v/%v should be reclaimed", podNS, podName, poolIP)
+								wrappedLog.Sugar().Infof("pod %s/%s is a static Pod with a status of %v and has been assigned an different IP address, the endpoint %v/%v should be reclaimed", podNS, podName, poolIP, endpoint.Namespace, endpoint.Name)
 								flagGCEndpoint = true
 							} else {
 								vaildPod, err := s.isValidStatefulsetOrKubevirt(ctx, scanAllLogger, podNS, podName, poolIP, podYaml.OwnerReferences[0].Kind)
