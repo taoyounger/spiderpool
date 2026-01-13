@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -180,7 +181,7 @@ func DaemonMain() {
 
 	go func() {
 		if err := srv.Serve(); nil != err {
-			if err == http.ErrServerClosed {
+			if errors.Is(err, http.ErrServerClosed) {
 				return
 			}
 			logger.Fatal(err.Error())

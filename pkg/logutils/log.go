@@ -25,7 +25,7 @@ var (
 type LogFormat string
 
 const (
-	JsonLogFormat    LogFormat = "json"
+	JSONLogFormat    LogFormat = "json"
 	ConsoleLogFormat LogFormat = "console"
 )
 
@@ -190,7 +190,7 @@ func NewLoggerWithOption(format LogFormat, outputMode LogMode, fileOutputOption 
 	var encoder zapcore.Encoder
 
 	switch format {
-	case JsonLogFormat:
+	case JSONLogFormat:
 		encoder = zapcore.NewJSONEncoder(encoderConfig)
 	case ConsoleLogFormat:
 		encoder = zapcore.NewConsoleEncoder(encoderConfig)
@@ -206,11 +206,11 @@ func NewLoggerWithOption(format LogFormat, outputMode LogMode, fileOutputOption 
 	return logger, nil
 }
 
-// InitStdoutLogger create  Logger instance with default configuration for 'stdout' usage, it's JsonLogFormat.
+// InitStdoutLogger create  Logger instance with default configuration for 'stdout' usage, it's JSONLogFormat.
 func InitStdoutLogger(logLevel LogLevel) error {
-	l, err := NewLoggerWithOption(JsonLogFormat, OUTPUT_STDOUT, nil, true, true, true, logLevel)
+	l, err := NewLoggerWithOption(JSONLogFormat, OUTPUT_STDOUT, nil, true, true, true, logLevel)
 	if nil != err {
-		return fmt.Errorf("failed to init logger for stdout: %v", err)
+		return fmt.Errorf("failed to init logger for stdout: %w", err)
 	}
 	Logger = l
 	return nil
@@ -221,7 +221,7 @@ func InitStdoutLogger(logLevel LogLevel) error {
 func InitStderrLogger(logLevel LogLevel) error {
 	l, err := NewLoggerWithOption(ConsoleLogFormat, OUTPUT_STDERR, nil, false, false, false, logLevel)
 	if nil != err {
-		return fmt.Errorf("failed to init logger for stderr: %v", err)
+		return fmt.Errorf("failed to init logger for stderr: %w", err)
 	}
 	LoggerStderr = l
 	return nil
@@ -236,9 +236,9 @@ func InitFileLogger(logLevel LogLevel, filePath string, fileMaxSize, fileMaxAge,
 		MaxAge:     fileMaxAge,
 		MaxBackups: fileMaxBackups,
 	}
-	logFile, err := NewLoggerWithOption(JsonLogFormat, OUTPUT_FILE, &fileLoggerConf, true, true, true, logLevel)
+	logFile, err := NewLoggerWithOption(JSONLogFormat, OUTPUT_FILE, &fileLoggerConf, true, true, true, logLevel)
 	if nil != err {
-		return nil, fmt.Errorf("failed to init logger for file: %v", err)
+		return nil, fmt.Errorf("failed to init logger for file: %w", err)
 	}
 
 	return logFile, nil

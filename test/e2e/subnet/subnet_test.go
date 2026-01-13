@@ -300,7 +300,7 @@ var _ = Describe("test subnet", Label("subnet"), func() {
 
 		It("Automatic creation, extension and deletion of ippool by different controllers", Label("I00003"), func() {
 			var (
-				stsName = "sts-" + tools.RandomName()
+				stsName                        = "sts-" + tools.RandomName()
 				stsReplicasOriginialNum int32  = 1
 				stsReplicasScaleupNum   int32  = 2
 				rsName                  string = "rs-" + tools.RandomName()

@@ -4,6 +4,7 @@
 package networking
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -167,11 +168,11 @@ func isInterfaceExist(iface string) (bool, error) {
 		return true, nil
 	}
 
-	if _, ok := err.(netlink.LinkNotFoundError); ok {
+	var netErr netlink.LinkNotFoundError
+	if errors.As(err, &netErr) {
 		return false, nil
-	} else {
-		return false, err
 	}
+	return false, err
 }
 
 func GetUPLinkList(netns ns.NetNS) ([]netlink.Link, error) {

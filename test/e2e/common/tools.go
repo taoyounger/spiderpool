@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"net"
 	"os/exec"
@@ -33,7 +34,10 @@ func GenerateString(lenNum int, isHex bool) string {
 	str := strings.Builder{}
 	length := len(chars)
 	for i := 0; i < lenNum; i++ {
-		str.WriteString(chars[r.Intn(length)])
+		_, err := str.WriteString(chars[r.Intn(length)])
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	return str.String()
 }

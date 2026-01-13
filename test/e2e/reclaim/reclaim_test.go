@@ -216,7 +216,7 @@ var _ = Describe("test ip with reclaim ip case", Label("reclaim"), func() {
 				rsName         string = "rs-" + tools.RandomName()
 				rsReplicasNum  int32  = 1
 				jobName        string = "job-" + tools.RandomName()
-				jobNum  = *ptr.To(int32(1))
+				jobNum                = *ptr.To(int32(1))
 			)
 
 			// Create different controller resources
@@ -396,7 +396,8 @@ var _ = Describe("test ip with reclaim ip case", Label("reclaim"), func() {
 			dirtyIPv4 = common.GenerateRandomIPV4()
 			GinkgoWriter.Printf("generate dirty IPv4 :%v \n", dirtyIPv4)
 
-			dirtyIPv6 = common.GenerateRandomIPV6()
+			dirtyIPv6, err := common.GenerateRandomIPV6()
+			Expect(err).NotTo(HaveOccurred())
 			GinkgoWriter.Printf("generate dirty IPv6:%v\n", dirtyIPv6)
 
 			dirtyPodName = "dirtyPod-" + tools.RandomName()

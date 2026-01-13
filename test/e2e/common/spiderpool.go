@@ -533,10 +533,12 @@ func GenerateRandomIPV4() string {
 	return fmt.Sprintf("%d:%d:%d:%d", a, b, c, d)
 }
 
-func GenerateRandomIPV6() string {
+func GenerateRandomIPV6() (string, error) {
 	n := make([]byte, 3)
-	r.Read(n)
-	return fmt.Sprintf("%x:%x::%x", n[0], n[1], n[2])
+	if _, err := r.Read(n); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x:%x::%x", n[0], n[1], n[2]), nil
 }
 
 // Waiting for Ippool Status Condition By Allocated IPs meets expectations

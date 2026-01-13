@@ -6,10 +6,7 @@ linters:
     - errcheck
     - staticcheck
     - ineffassign
-    - typecheck
     - errorlint
-    - gofmt
-    - gofumpt
 
   settings:
     errcheck:
@@ -22,3 +19,8 @@ linters:
       checks:
         - all
         - -SA1019
+
+formatters:
+  enable:
+    - gofmt
+    - gofumpt

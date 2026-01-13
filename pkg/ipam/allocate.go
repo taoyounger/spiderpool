@@ -886,7 +886,7 @@ func (i *ipam) filterPoolCandidatesByPfSubnet(pool *spiderpoolv2beta1.SpiderIPPo
 		if err != nil {
 			return err
 		}
-		pfName, err = networking.GetPfNameFromVfDeviceId(vfDeviceID)
+		pfName, err = networking.GetPfNameFromVfDeviceID(vfDeviceID)
 		if err != nil {
 			return err
 		}

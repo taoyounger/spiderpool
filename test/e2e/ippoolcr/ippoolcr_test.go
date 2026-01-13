@@ -216,7 +216,8 @@ var _ = Describe("test ippool CR", Label("ippoolCR"), func() {
 
 		// Generate Invalid Gateway and Dst
 		v4InvalidGateway = common.GenerateRandomIPV4()
-		v6InvalidGateway = common.GenerateRandomIPV6()
+		v6InvalidGateway, err := common.GenerateRandomIPV6()
+		Expect(err).NotTo(HaveOccurred())
 
 		annoPodIPPools := types.AnnoPodIPPoolsValue{
 			types.AnnoIPPoolItem{

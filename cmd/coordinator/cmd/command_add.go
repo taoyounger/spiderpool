@@ -129,9 +129,9 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 	}
 
 	// get all ip of pod
-	var allPodIp []netlink.Addr
+	var allPodIP []netlink.Addr
 	err = c.netns.Do(func(netNS ns.NetNS) error {
-		allPodIp, err = networking.GetAllIPAddress(ipFamily, []string{`^lo$`})
+		allPodIP, err = networking.GetAllIPAddress(ipFamily, []string{`^lo$`})
 		if err != nil {
 			logger.Error("failed to GetAllIPAddress in pod", zap.Error(err))
 			return fmt.Errorf("failed to GetAllIPAddress in pod: %v", err)
@@ -142,10 +142,10 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 		logger.Error("failed to all ip of pod", zap.Error(err))
 		return err
 	}
-	logger.Debug(fmt.Sprintf("all pod ip: %+v", allPodIp))
+	logger.Debug(fmt.Sprintf("all pod ip: %+v", allPodIP))
 
 	// get ip addresses of the node
-	c.hostIPRouteForPod, err = GetAllHostIPRouteForPod(c, ipFamily, allPodIp)
+	c.hostIPRouteForPod, err = GetAllHostIPRouteForPod(c, ipFamily, allPodIP)
 	if err != nil {
 		logger.Error("failed to get IPAddressOnNode", zap.Error(err))
 		return fmt.Errorf("failed to get IPAddressOnNode: %v", err)
