@@ -729,7 +729,7 @@ func (c *coordinator) AnnounceIPs(logger *zap.Logger) error {
 			if err != nil {
 				return fmt.Errorf("failed to init ndp client: %w", err)
 			}
-			defer ndpClient.Close()
+			defer func() { _ = ndpClient.Close() }()
 			if err = networking.SendUnsolicitedNeighborAdvertisement(addr.IP, ifi, ndpClient); err != nil {
 				logger.Error("failed to send unsolicited neighbor advertisements", zap.Error(err))
 			} else {

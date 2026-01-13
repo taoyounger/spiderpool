@@ -91,7 +91,7 @@ var _ = Describe("spiderpool plugin", Label("unittest", "ipam_plugin_test"), fun
 			Expect(err).NotTo(HaveOccurred())
 			err = os.RemoveAll(CNILogFilePath)
 			Expect(err).NotTo(HaveOccurred())
-			defer fakeNs.Close()
+			defer func() { _ = fakeNs.Close() }()
 		})
 
 		args = &skel.CmdArgs{

@@ -92,7 +92,7 @@ func SendARPReuqest(l netlink.Link, srcIP, dstIP net.IP) error {
 	if err != nil {
 		return fmt.Errorf("failed to create AF_PACKET datagram socket: %v", err)
 	}
-	defer syscall.Close(soc)
+	defer func() { _ = syscall.Close(soc) }()
 
 	if err := syscall.Sendto(soc, arpPacket.Bytes(), 0, &sockAddr); err != nil {
 		return fmt.Errorf("failed to send ARP request for IPv4 %s on Interface %s: %v", srcIP.String(), l.Attrs().Name, err)
@@ -198,7 +198,7 @@ func SendUnsolicitedNeighborAdvertisement1(dstIP net.IP, l netlink.Link) error {
 	if err != nil {
 		return fmt.Errorf("failed to create AF_INET6 raw socket: %v", err)
 	}
-	defer syscall.Close(soc)
+	defer func() { _ = syscall.Close(soc) }()
 
 	// As per RFC 4861 section 7.1.2, the IPv6 hop limit is always 255.
 	if err := syscall.SetsockoptInt(soc, syscall.IPPROTO_IPV6, syscall.IPV6_MULTICAST_HOPS, 255); err != nil {
@@ -340,7 +340,7 @@ func AnnounceIPs(logger *zap.Logger, iface string, ips []net.IP) error {
 			if err != nil {
 				return fmt.Errorf("failed to init ndp client: %w", err)
 			}
-			defer ndpClient.Close()
+			defer func() { _ = ndpClient.Close() }()
 			if err = SendUnsolicitedNeighborAdvertisement(addr, ifi, ndpClient); err != nil {
 				logger.Error("failed to send unsolicited neighbor advertisements", zap.Error(err))
 			} else {

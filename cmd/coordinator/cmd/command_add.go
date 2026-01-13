@@ -105,13 +105,13 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 		logger.Error(err.Error())
 		return fmt.Errorf("failed to GetNS %q: %v", args.Netns, err)
 	}
-	defer c.netns.Close()
+	defer func() { _ = c.netns.Close() }()
 
 	c.hostNs, err = ns.GetCurrentNS()
 	if err != nil {
 		return fmt.Errorf("failed to get current netns: %v", err)
 	}
-	defer c.hostNs.Close()
+	defer func() { _ = c.hostNs.Close() }()
 	logger.Sugar().Debugf("Get current host netns: %v", c.hostNs.Path())
 
 	// checking if the nic is in up state

@@ -184,8 +184,8 @@ func (d *Detector) NDPDetect() error {
 	for !ndpReady {
 		select {
 		case <-ctx.Done():
-			d.logger.Error("Waiting for the maximum timeout of 10s, the state of the local link address is still not READY.")
-			return fmt.Errorf("Waiting for the maximum timeout of 10s, the state of the local link address is still not READY.")
+			d.logger.Error("Waiting for the maximum timeout of 10s, the state of the local link address is still not READY")
+			return fmt.Errorf("waiting for the maximum timeout of 10s, the state of the local link address is still not READY")
 		default:
 			ndpClient, _, err = ndp.Listen(ifi, ndp.LinkLocal)
 			if err == nil {
@@ -194,7 +194,7 @@ func (d *Detector) NDPDetect() error {
 			}
 		}
 	}
-	defer ndpClient.Close()
+	defer func() { _ = ndpClient.Close() }()
 
 	// IP conflict detection must precede gateway detection, which avoids the
 	// possibility that gateway detection may update arp table entries first and cause

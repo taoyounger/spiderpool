@@ -10,7 +10,6 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/spidernet-io/e2eframework/tools"
-	"github.com/spidernet-io/spiderpool/pkg/constant"
 	pkgconstant "github.com/spidernet-io/spiderpool/pkg/constant"
 	spiderpoolv2beta1 "github.com/spidernet-io/spiderpool/pkg/k8s/apis/spiderpool.spidernet.io/v2beta1"
 	"github.com/spidernet-io/spiderpool/pkg/types"
@@ -109,8 +108,8 @@ var _ = Describe("Third party control: OpenKruise", Label("kruise"), func() {
 			replicasNum                    int32 = 1
 			thirdPartyAppName              string
 			v4PoolNameList, v6PoolNameList []string
-			IpNum                          int    = 5
-			fixedIPNumber                  string = "2"
+			IpNum                          = 5
+			fixedIPNumber                  = "2"
 		)
 
 		BeforeEach(func() {
@@ -174,21 +173,21 @@ var _ = Describe("Third party control: OpenKruise", Label("kruise"), func() {
 			GinkgoWriter.Println("Generate annotations for third party control objects.")
 			kruiseCloneSetObject := common.GenerateExampleKruiseCloneSetYaml(kruiseCloneSetName, namespace, kruiseReplicasNum)
 			kruiseCloneSetObject.Spec.Template.Annotations = map[string]string{
-				constant.AnnoSpiderSubnet: string(subnetAnnoMarshal),
+				pkgconstant.AnnoSpiderSubnet: string(subnetAnnoMarshal),
 				/*
 					Notice
 						You must specify a fixed IP number for auto-created IPPool if you want to use SpiderSubnet ipam.
 						Here's an example ipam.spidernet.io/ippool-ip-number: "5".
 				*/
-				constant.AnnoSpiderSubnetPoolIPNumber: fixedIPNumber,
+				pkgconstant.AnnoSpiderSubnetPoolIPNumber: fixedIPNumber,
 			}
 			GinkgoWriter.Printf("create CloneSet %v/%v. \n", namespace, kruiseCloneSetName)
 			Expect(common.CreateKruiseCloneSet(frame, kruiseCloneSetObject)).NotTo(HaveOccurred())
 
 			kruiseStatefulsetObject := common.GenerateExampleKruiseStatefulSetYaml(kruiseStatefulSetName, namespace, kruiseReplicasNum)
 			kruiseStatefulsetObject.Spec.Template.Annotations = map[string]string{
-				constant.AnnoSpiderSubnet:             string(subnetAnnoMarshal),
-				constant.AnnoSpiderSubnetPoolIPNumber: fixedIPNumber,
+				pkgconstant.AnnoSpiderSubnet:             string(subnetAnnoMarshal),
+				pkgconstant.AnnoSpiderSubnetPoolIPNumber: fixedIPNumber,
 			}
 			GinkgoWriter.Printf("create statefulSet %v/%v. \n", namespace, kruiseStatefulSetName)
 			Expect(common.CreateKruiseStatefulSet(frame, kruiseStatefulsetObject)).NotTo(HaveOccurred())
@@ -272,14 +271,14 @@ var _ = Describe("Third party control: OpenKruise", Label("kruise"), func() {
 			annotationMap := map[string]string{
 				// Set the annotation ipam.spidernet.io/ippool-reclaim: "false"
 				// to prevent the fixed pool from being deleted when the application is deleted.
-				constant.AnnoSpiderSubnetReclaimIPPool: "false",
-				constant.AnnoSpiderSubnet:              string(subnetAnnoMarshal),
+				pkgconstant.AnnoSpiderSubnetReclaimIPPool: "false",
+				pkgconstant.AnnoSpiderSubnet:              string(subnetAnnoMarshal),
 				/*
 					Notice
 						You must specify a fixed IP number for auto-created IPPool if you want to use SpiderSubnet ipam.
 						Here's an example ipam.spidernet.io/ippool-ip-number: "5".
 				*/
-				constant.AnnoSpiderSubnetPoolIPNumber: fixedIPNumber,
+				pkgconstant.AnnoSpiderSubnetPoolIPNumber: fixedIPNumber,
 			}
 			GinkgoWriter.Printf("Set the annotation ipam.spidernet.io/reclaim: false for the application %v/%v, and create. \n", namespace, thirdPartyAppName)
 			kruiseCloneSetObject := common.GenerateExampleKruiseCloneSetYaml(thirdPartyAppName, namespace, kruiseReplicasNum)

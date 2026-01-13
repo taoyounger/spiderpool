@@ -59,7 +59,7 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to GetNS %q for pod: %v", args.Netns, err)
 	}
-	defer netns.Close()
+	defer func() { _ = netns.Close() }()
 
 	logger, err = SetupFileLogging(conf)
 	if err != nil {
@@ -90,7 +90,7 @@ func CmdAdd(args *skel.CmdArgs) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to get current netns: %v", err)
 	}
-	defer hostNs.Close()
+	defer func() { _ = hostNs.Close() }()
 
 	logger = logger.Named(BinNamePlugin).With(
 		zap.String("Action", "ADD"),

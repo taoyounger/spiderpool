@@ -30,7 +30,6 @@ import (
 	"github.com/spidernet-io/spiderpool/pkg/utils/convert"
 	"github.com/spidernet-io/spiderpool/pkg/utils/retry"
 	"github.com/spidernet-io/spiderpool/test/e2e/common"
-	api_errors "k8s.io/apimachinery/pkg/api/errors"
 )
 
 var _ = Describe("test ip with reclaim ip case", Label("reclaim"), func() {
@@ -217,7 +216,7 @@ var _ = Describe("test ip with reclaim ip case", Label("reclaim"), func() {
 				rsName         string = "rs-" + tools.RandomName()
 				rsReplicasNum  int32  = 1
 				jobName        string = "job-" + tools.RandomName()
-				jobNum         int32  = *ptr.To(int32(1))
+				jobNum  = *ptr.To(int32(1))
 			)
 
 			// Create different controller resources
@@ -932,7 +931,7 @@ var _ = Describe("test ip with reclaim ip case", Label("reclaim"), func() {
 			for _, pod := range podList.Items {
 				stsEndpoint, err := common.GetWorkloadByName(frame, namespace, pod.Name)
 				if err != nil {
-					if api_errors.IsNotFound(err) {
+					if errors.IsNotFound(err) {
 						GinkgoWriter.Printf("The statefulSet endpoint %v/%v has been recycled yet \n", namespace, pod.Name)
 						continue
 					} else {

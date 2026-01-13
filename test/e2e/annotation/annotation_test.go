@@ -18,7 +18,6 @@ import (
 	"k8s.io/kubectl/pkg/util/podutils"
 	"k8s.io/utils/ptr"
 
-	"github.com/spidernet-io/spiderpool/pkg/constant"
 	pkgconstant "github.com/spidernet-io/spiderpool/pkg/constant"
 	spiderpool "github.com/spidernet-io/spiderpool/pkg/k8s/apis/spiderpool.spidernet.io/v2beta1"
 	"github.com/spidernet-io/spiderpool/pkg/types"
@@ -981,7 +980,7 @@ var _ = Describe("test annotation", Label("annotation"), func() {
 					Namespace: nsName,
 				},
 				Spec: spiderpool.MultusCNIConfigSpec{
-					CniType: ptr.To(constant.MacvlanCNI),
+					CniType: ptr.To(pkgconstant.MacvlanCNI),
 					MacvlanConfig: &spiderpool.SpiderMacvlanCniConfig{
 						Master:                []string{common.NIC1},
 						SpiderpoolConfigPools: &spiderpool.SpiderpoolPools{},
