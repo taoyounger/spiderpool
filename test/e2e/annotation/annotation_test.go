@@ -216,7 +216,7 @@ var _ = Describe("test annotation", Label("annotation"), func() {
 			v4PoolName, v6PoolName   string
 			iPv4PoolObj, iPv6PoolObj *spiderpool.SpiderIPPool
 			err                      error
-			ipNum                    int = 2
+			ipNum                    = 2
 		)
 
 		// The case relies on a Dual-stack
@@ -289,7 +289,7 @@ var _ = Describe("test annotation", Label("annotation"), func() {
 		var v4PoolNameList, v6PoolNameList []string
 		var cleanGateway bool
 		var err error
-		var ipNum int = 10
+		var ipNum = 10
 
 		BeforeEach(func() {
 			cleanGateway = false
@@ -376,8 +376,8 @@ var _ = Describe("test annotation", Label("annotation"), func() {
 			Label("A00008", "E00007"), func() {
 				var containerName = "cn" + tools.RandomName()
 				var annotationKeyName = "test-long-yaml-" + tools.RandomName()
-				var annotationLength int = 200
-				var containerNum int = 2
+				var annotationLength = 200
+				var containerNum = 2
 
 				// Generate IPPool annotation string
 				podIppoolAnnoStr = common.GeneratePodIPPoolAnnotations(frame, common.NIC1, v4PoolNameList, v6PoolNameList)

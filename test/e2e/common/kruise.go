@@ -90,14 +90,14 @@ func CreateKruiseCloneSet(f *frame.Framework, kruiseCloneSet *kruisev1.CloneSet,
 
 	fake := &kruisev1.CloneSet{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: kruiseCloneSet.ObjectMeta.Name,
+			Name: kruiseCloneSet.Name,
 		},
 	}
 	key := client.ObjectKeyFromObject(fake)
 	existing := &kruisev1.CloneSet{}
 	e := f.GetResource(key, existing)
-	if e == nil && existing.ObjectMeta.DeletionTimestamp == nil {
-		return fmt.Errorf("failed to create, a same kruise cloneset %v/%v exists", kruiseCloneSet.ObjectMeta.Namespace, kruiseCloneSet.ObjectMeta.Name)
+	if e == nil && existing.DeletionTimestamp == nil {
+		return fmt.Errorf("failed to create, a same kruise cloneset %v/%v exists", kruiseCloneSet.Namespace, kruiseCloneSet.Name)
 	}
 	return f.CreateResource(kruiseCloneSet, opts...)
 }

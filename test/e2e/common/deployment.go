@@ -9,7 +9,9 @@ import (
 	"sync"
 	"time"
 
+	//nolint:all // Standard for Ginkgo/Gomega BDD testing framework
 	. "github.com/onsi/ginkgo/v2"
+	//nolint:all // Standard for Ginkgo/Gomega BDD testing framework
 	. "github.com/onsi/gomega"
 	e2e "github.com/spidernet-io/e2eframework/framework"
 	"github.com/spidernet-io/e2eframework/tools"

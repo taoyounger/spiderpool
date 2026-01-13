@@ -824,7 +824,7 @@ func (i *ipam) selectByPod(ctx context.Context, version types.IPVersion, ipPool 
 		// Refer from the multus-cni source codes, for annotation "k8s.v1.cni.cncf.io/networks" value without Namespace,
 		// we will regard the pod Namespace as the value's namespace
 		if multusNS == "" {
-			multusNS = pod.ObjectMeta.Namespace
+			multusNS = pod.Namespace
 		}
 
 		// impossible
