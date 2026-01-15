@@ -1,6 +1,7 @@
 // Copyright 2024 Authors of spidernet-io
 // SPDX-License-Identifier: Apache-2.0
 
+// Package ethtool provides ethtool functionality for RDMA metrics.
 package ethtool
 
 import (

@@ -1,6 +1,7 @@
 // Copyright 2022 Authors of spidernet-io
 // SPDX-License-Identifier: Apache-2.0
 
+// Package constant defines all constants used in spiderpool.
 package constant
 
 import (

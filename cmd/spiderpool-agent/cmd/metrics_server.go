@@ -77,6 +77,6 @@ func initAgentMetricsServer(ctx context.Context) {
 			}
 		}()
 
-		agentContext.MetricsHttpServer = metricsSrv
+		agentContext.MetricsHTTPServer = metricsSrv
 	}
 }

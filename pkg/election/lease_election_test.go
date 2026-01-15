@@ -24,10 +24,10 @@ var _ = Describe("Leader Election", Label("unittest", "election_test"), func() {
 	}
 
 	var globalParams *newLeaseElectorParams
-	var leaseDuration = 15 * time.Second
-	var renewDeadline = 2 * time.Second
-	var retryPeriod = 1 * time.Second
-	var retryElectGap = 5 * time.Second
+	leaseDuration := 15 * time.Second
+	renewDeadline := 2 * time.Second
+	retryPeriod := 1 * time.Second
+	retryElectGap := 5 * time.Second
 
 	BeforeEach(func() {
 		globalParams = new(newLeaseElectorParams)

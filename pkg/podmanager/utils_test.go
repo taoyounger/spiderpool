@@ -239,9 +239,7 @@ var _ = Describe("PodManager utils", Label("pod_manager_utils_test"), func() {
 	})
 
 	Describe("DoValidateRdmaResouce", func() {
-		var (
-			mc v2beta1.SpiderMultusConfig
-		)
+		var mc v2beta1.SpiderMultusConfig
 
 		Context("when CNI type is Macvlan", func() {
 			It("should not return an error for valid RDMA configuration", func() {

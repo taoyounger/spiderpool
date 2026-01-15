@@ -1,5 +1,7 @@
 // Copyright 2022 Authors of spidernet-io
 // SPDX-License-Identifier: Apache-2.0
+
+// Package podmanager provides functionality for managing Kubernetes pods.
 package podmanager
 
 import (

@@ -39,9 +39,9 @@ const DefaultLogLevelStr = logutils.LogDebugLevelStr
 type K8sArgs struct {
 	types.CommonArgs
 	IP                         net.IP
-	K8S_POD_NAME               types.UnmarshallableString //revive:disable-line
-	K8S_POD_NAMESPACE          types.UnmarshallableString //revive:disable-line
-	K8S_POD_INFRA_CONTAINER_ID types.UnmarshallableString //revive:disable-line
+	K8S_POD_NAME               types.UnmarshallableString //nolint:staticcheck // CNI standard field name
+	K8S_POD_NAMESPACE          types.UnmarshallableString //nolint:staticcheck // CNI standard field name
+	K8S_POD_INFRA_CONTAINER_ID types.UnmarshallableString //nolint:staticcheck // CNI standard field name
 	K8S_POD_UID                types.UnmarshallableString //revive:disable-line
 }
 
@@ -77,7 +77,7 @@ func LoadNetConf(argsStdin []byte) (*NetConf, error) {
 
 	err := json.Unmarshal(argsStdin, netConf)
 	if nil != err {
-		return nil, fmt.Errorf("failed to parse CNI network configuration: %v", err)
+		return nil, fmt.Errorf("failed to parse CNI network configuration: %w", err)
 	}
 
 	if netConf.IPAM.LogLevel == "" {
